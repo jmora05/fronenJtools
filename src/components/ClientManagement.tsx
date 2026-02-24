@@ -425,7 +425,7 @@ export function ClientManagement({ onNavigateToSales }) {
                   {formData.clientType === 'Particular' ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="firstName">Nombre *</Label>
+                        <Label htmlFor="firstName">Nombres *</Label>
                         <Input
                           id="firstName"
                           value={formData.firstName}
@@ -435,7 +435,7 @@ export function ClientManagement({ onNavigateToSales }) {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="lastName">Apellido *</Label>
+                        <Label htmlFor="lastName">Apellidos *</Label>
                         <Input
                           id="lastName"
                           value={formData.lastName}

@@ -587,8 +587,8 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
   // Filtrado de ventas
   const filteredSales = sales.filter(sale => {
     return sale.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           sale.id.toString().includes(searchTerm) ||
-           (sale.clientDocument && sale.clientDocument.includes(searchTerm));
+          sale.id.toString().includes(searchTerm) ||
+          (sale.clientDocument && sale.clientDocument.includes(searchTerm));
   });
 
   // Paginación
@@ -605,7 +605,7 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
 
   return (
     <TooltipProvider>
-      <div className="p-8 space-y-8 bg-gray-50 min-h-screen">
+      <div className="p-8 space-y-8 bg-gray-50 min-h-screen" >
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -633,7 +633,7 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
                 Nueva Venta
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-[1400px] w-full max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Registrar Nueva Venta</DialogTitle>
                 <DialogDescription>
@@ -641,7 +641,7 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
                 </DialogDescription>
               </DialogHeader>
 
-              <form onSubmit={handleCreateSale} className="space-y-6">
+              <form onSubmit={handleCreateSale} className="space-y-6 ">
                 {/* Información del Cliente */}
                 <Card className="border-2 border-gray-100">
                   <CardHeader className="bg-gradient-to-r from-gray-50 to-white">
@@ -982,7 +982,7 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleViewPDF(sale)}
-                                className="text-green-600 hover:text-green-700 border-green-200 hover:border-green-300 hover:bg-green-50"
+                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
                               >
                                 <FileTextIcon className="w-4 h-4" />
                               </Button>
@@ -997,7 +997,7 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
                                   variant="outline"
                                   size="sm"
                                   onClick={() => handleCancelSale(sale)}
-                                  className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
+                                  className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
                                 >
                                   <XCircleIcon className="w-4 h-4" />
                                 </Button>

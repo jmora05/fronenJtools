@@ -1,3 +1,4 @@
+// pedidos
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { 
@@ -219,7 +220,7 @@ export function OrderModule() {
 
   const filteredOrders = orders.filter(order => {
     const matchesSearch = order.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.id.toLowerCase().includes(searchTerm.toLowerCase());
+                        order.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -934,7 +935,7 @@ export function OrderModule() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleEdit(order)}
-                                className="text-orange-600 hover:text-orange-700 border-orange-200 hover:border-orange-300 hover:bg-orange-50"
+                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
                               >
                                 <EditIcon className="w-4 h-4" />
                               </Button>
@@ -948,7 +949,7 @@ export function OrderModule() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleViewPDF(order)}
-                                className="text-green-600 hover:text-green-700 border-green-200 hover:border-green-300 hover:bg-green-50"
+                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
                               >
                                 <FileTextIcon className="w-4 h-4" />
                               </Button>
