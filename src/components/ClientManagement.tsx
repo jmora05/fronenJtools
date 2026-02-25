@@ -641,13 +641,12 @@ export function ClientManagement({ onNavigateToSales }) {
         {/* Clients Table */}
         <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full table-fixed">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Cliente</th>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Documento/NIT</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
+                  <th className="px-10 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Cliente</th>
+                  <th className="px-10 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Contacto</th>
+                  <th className="px-10 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -660,7 +659,7 @@ export function ClientManagement({ onNavigateToSales }) {
                 ) : (
                   currentClients.map((client) => (
                     <tr key={client.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4">
+                      <td className="px-10 py-4">
                         <div className="flex items-center space-x-3">
                           <Avatar className="w-10 h-10">
                             <AvatarImage src={client.photoPreview} alt={client.name} />
@@ -670,25 +669,15 @@ export function ClientManagement({ onNavigateToSales }) {
                           </Avatar>
                           <div>
                             <p className="text-sm text-gray-900">{client.name}</p>
-                            <p className="text-sm text-gray-500">{client.email}</p>
+                            <p className="text-sm text-gray-500">{client.documentType} {client.identification}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
-                        {client.documentType} {client.identification}
+                      <td className="px-10 py-4 text-sm text-gray-600">
+                        {client.email}<br/>{client.phone}
                       </td>
-                      <td className="px-6 py-4 text-center">
-                        <div className="flex items-center justify-center space-x-2">
-                          <Switch
-                            checked={client.isActive}
-                            onCheckedChange={(checked) => handleStatusChange(client.id, checked)}
-                          />
-                          <span className="text-sm text-gray-600">
-                            {client.isActive ? 'Activo' : 'Inactivo'}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
+                      
+                      <td className="px-10 py-4">
                         <div className="flex items-center justify-center space-x-2">
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -696,7 +685,7 @@ export function ClientManagement({ onNavigateToSales }) {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleViewPurchaseSummary(client)}
-                                className="text-blue-900 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-50"
                               >
                                 <EyeIcon className="w-4 h-4" />
                               </Button>
@@ -710,7 +699,7 @@ export function ClientManagement({ onNavigateToSales }) {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleEdit(client)}
-                                className="text-blue-900 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-50"
                               >
                                 <EditIcon className="w-4 h-4" />
                               </Button>
@@ -724,7 +713,7 @@ export function ClientManagement({ onNavigateToSales }) {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleDelete(client)}
-                                className="text-blue-900 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-50"
                               >
                                 <TrashIcon className="w-4 h-4" />
                               </Button>
@@ -739,7 +728,7 @@ export function ClientManagement({ onNavigateToSales }) {
               </tbody>
             </table>
           </div>
-
+{/* PAGINACION */}
           {/* Paginación */}
           {filteredClients.length > 0 && (
             <div className="border-t border-gray-200 px-6 py-4">
@@ -785,7 +774,7 @@ export function ClientManagement({ onNavigateToSales }) {
             </div>
           )}
         </div>
-
+{/* DETALLE DEL CLIENTE */}
         {/* Modal de Detalle del Cliente */}
         <Dialog open={showPurchaseSummary} onOpenChange={setShowPurchaseSummary}>
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -830,7 +819,7 @@ export function ClientManagement({ onNavigateToSales }) {
                         <div className="mt-1">
                           <Badge 
                             variant={selectedClientForSummary.isActive ? 'default' : 'destructive'}
-                            className={selectedClientForSummary.isActive ? 'bg-green-100 text-green-800' : ''}
+                            className={selectedClientForSummary.isActive ? 'bg-blue-100 text-blue-800' : ''}
                           >
                             {selectedClientForSummary.isActive ? 'Activo' : 'Inactivo'}
                           </Badge>
@@ -869,7 +858,7 @@ export function ClientManagement({ onNavigateToSales }) {
         <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle className="flex items-center gap-2 text-red-600">
+              <AlertDialogTitle className="flex items-center gap-2 text-blue-600">
                 <AlertTriangleIcon className="w-5 h-5" />
                 Confirmar Eliminación
               </AlertDialogTitle>
@@ -895,14 +884,14 @@ export function ClientManagement({ onNavigateToSales }) {
                     </div>
                   </div>
                 )}
-                <p className="text-sm text-red-600">Esta acción no se puede deshacer.</p>
+              
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancelar</AlertDialogCancel>
               <AlertDialogAction
                 onClick={confirmDelete}
-                className="bg-red-600 hover:bg-red-700"
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 Eliminar Cliente
               </AlertDialogAction>
