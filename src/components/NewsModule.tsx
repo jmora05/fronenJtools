@@ -13,12 +13,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 import { PlusIcon, SearchIcon, EditIcon, TrashIcon, XIcon, CalendarIcon, BellIcon, AlertCircleIcon, ChevronLeftIcon, ChevronRightIcon, EyeIcon, UserIcon } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 
-interface Issue {
-  // id: number;
+interface Issue { 
   title: string;
   description: string;
-  priority: 'Baja' | 'Media' | 'Alta';
-  status: 'Registrada' | 'En proceso' | 'Solucionada' | 'Cerrada';
+  status: 'Registrada' | 'Aprobada' | 'Rechazada';
   responsibleEmployee: string;
   reportedBy: string;
   reportDate: string;
@@ -27,61 +25,49 @@ interface Issue {
 export function NewsModule() {
   const [issues, setIssues] = useState<Issue[]>([
     {
-      // id: 1,
       title: 'Falla en sistema de facturación',
       description: 'El sistema de facturación no permite generar facturas electrónicas desde esta mañana. Los clientes están reportando demoras.',
-      priority: 'Alta',
-      status: 'En proceso',
+      status: 'Aprobada',
       responsibleEmployee: 'Carlos Ramírez',
       reportedBy: 'María González',
       reportDate: '2024-11-05'
     },
     {
-      //id: 2,
       title: 'Equipo de aire acondicionado requiere mantenimiento',
       description: 'El aire acondicionado de la sala de ventas no está enfriando adecuadamente. Se requiere revisión técnica.',
-      priority: 'Media',
-      status: 'Registrada',
+      status: 'Aprobada',
       responsibleEmployee: 'Luis Torres',
       reportedBy: 'Ana Rodríguez',
       reportDate: '2024-11-04'
     },
     {
-      //id: 3,
       title: 'Falta de inventario en productos de alta rotación',
       description: 'Se han agotado varias referencias de filtros de aceite que son de alta demanda. Clientes están solicitando.',
-      priority: 'Alta',
-      status: 'En proceso',
+      status: 'Aprobada',
       responsibleEmployee: 'Pedro Sánchez',
       reportedBy: 'Carlos Medina',
       reportDate: '2024-11-03'
     },
     {
-      //id: 4,
       title: 'Actualización de precios en catálogo',
       description: 'Algunos productos tienen precios desactualizados en el sistema. Se requiere actualización urgente.',
-      priority: 'Media',
-      status: 'Solucionada',
+      status: 'Aprobada',
       responsibleEmployee: 'Andrea López',
       reportedBy: 'Roberto Díaz',
       reportDate: '2024-11-01'
     },
     {
-      //id: 5,
       title: 'Mejora en proceso de recepción de mercancía',
       description: 'Propuesta para optimizar el proceso de recepción y registro de mercancía en bodega.',
-      priority: 'Baja',
-      status: 'Registrada',
+      status: 'Aprobada ',
       responsibleEmployee: 'Javier Morales',
       reportedBy: 'Laura Gómez',
       reportDate: '2024-10-30'
     },
     {
-      //id: 6,
       title: 'Capacitación en nuevo sistema de ventas',
       description: 'Se requiere programar capacitación para el equipo de ventas sobre las nuevas funcionalidades del sistema.',
-      priority: 'Media',
-      status: 'En proceso',
+      status: 'Aprobada',
       responsibleEmployee: 'Diana Martínez',
       reportedBy: 'Andrés Castro',
       reportDate: '2024-10-28'
@@ -90,7 +76,6 @@ export function NewsModule() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [priorityFilter, setPriorityFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [isNewDialogOpen, setIsNewDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -101,8 +86,7 @@ export function NewsModule() {
   const [issueForm, setIssueForm] = useState({
     title: '',
     description: '',
-    priority: 'Media' as 'Baja' | 'Media' | 'Alta',
-    status: 'Registrada' as 'Registrada' | 'En proceso' | 'Solucionada' | 'Cerrada',
+    status: 'Registrada' as 'Registrada' | 'Aprobada' | 'Rechazada',
     responsibleEmployee: '',
     reportedBy: 'Usuario Actual'
   });
@@ -116,9 +100,8 @@ export function NewsModule() {
                           item.responsibleEmployee.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           item.reportedBy.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
-    const matchesPriority = priorityFilter === 'all' || item.priority === priorityFilter;
     
-    return matchesSearch && matchesStatus && matchesPriority;
+    return matchesSearch && matchesStatus
   });
 
   const totalPages = Math.ceil(filteredIssues.length / itemsPerPage);
@@ -131,7 +114,6 @@ export function NewsModule() {
     setIssueForm({
       title: '',
       description: '',
-      priority: 'Media',
       status: 'Registrada',
       responsibleEmployee: '',
       reportedBy: 'Usuario Actual'
@@ -188,7 +170,6 @@ export function NewsModule() {
     setIssueForm({
       title: issue.title,
       description: issue.description,
-      priority: issue.priority,
       status: issue.status,
       responsibleEmployee: issue.responsibleEmployee,
       reportedBy: issue.reportedBy
@@ -218,28 +199,14 @@ export function NewsModule() {
     return pages;
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'Alta':
-        return 'bg-red-100 text-red-700 border-red-200';
-      case 'Media':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-      case 'Baja':
-        return 'bg-green-100 text-green-700 border-green-200';
-      default:
-        return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
-  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Registrada':
         return 'bg-blue-100 text-blue-700 border-blue-200';
-      case 'En proceso':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-      case 'Solucionada':
-        return 'bg-green-100 text-green-700 border-green-200';
-      case 'Cerrada':
+      case 'Aprobada':
+        return 'bg-blue-100 text-blue-700 border-blue-200';
+      case 'Rechazada':
         return 'bg-gray-100 text-gray-700 border-gray-200';
       default:
         return 'bg-gray-100 text-gray-700 border-gray-200';
@@ -300,22 +267,6 @@ export function NewsModule() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="priority">Prioridad *</Label>
-                    <Select
-                      value={issueForm.priority}
-                      onValueChange={(value) => setIssueForm({ ...issueForm, priority: value as any })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Baja">Baja</SelectItem>
-                        <SelectItem value="Media">Media</SelectItem>
-                        <SelectItem value="Alta">Alta</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="status">Estado *</Label>
@@ -328,9 +279,8 @@ export function NewsModule() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Registrada">Registrada</SelectItem>
-                        <SelectItem value="En proceso">En proceso</SelectItem>
-                        <SelectItem value="Solucionada">Solucionada</SelectItem>
-                        <SelectItem value="Cerrada">Cerrada</SelectItem>
+                        <SelectItem value="Aprobada">Aprobada</SelectItem>
+                        <SelectItem value="Rechazada">Rechazada</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -398,22 +348,8 @@ export function NewsModule() {
                 <SelectContent>
                   <SelectItem value="all">Todos los estados</SelectItem>
                   <SelectItem value="Registrada">Registrada</SelectItem>
-                  <SelectItem value="En proceso">En proceso</SelectItem>
-                  <SelectItem value="Solucionada">Solucionada</SelectItem>
-                  <SelectItem value="Cerrada">Cerrada</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="w-full sm:w-48">
-              <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Prioridad" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas las prioridades</SelectItem>
-                  <SelectItem value="Alta">Alta</SelectItem>
-                  <SelectItem value="Media">Media</SelectItem>
-                  <SelectItem value="Baja">Baja</SelectItem>
+                  <SelectItem value="Aprobada">Aprobada</SelectItem>
+                  <SelectItem value="Rechazada">Rechazada</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -422,18 +358,15 @@ export function NewsModule() {
             </span>
           </div>
         </Card>
-
+{/*LISTA DE NOVEDADES*/}
         {/* Tabla de Novedades */}
         <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  {/* <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">ID</th> */}
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Título</th>
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Fecha</th>
-                  {/* <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Prioridad</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th> */}
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Responsable</th>
                   <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
                 </tr>
@@ -441,7 +374,7 @@ export function NewsModule() {
               <tbody className="divide-y divide-gray-200">
                 {paginatedIssues.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-6 py-12 text-center">
+                    <td colSpan={4} className="px-6 py-12 text-center">
                       <div className="flex flex-col items-center justify-center text-gray-500">
                         <AlertCircleIcon className="w-12 h-12 mb-3 text-gray-300" />
                         <p className="text-gray-900">No se encontraron novedades</p>
@@ -452,31 +385,13 @@ export function NewsModule() {
                 ) : (
                   paginatedIssues.map((issue) => (
                     <tr key={issue.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center">
-                          <div className="text-sm text-blue-600">{issue.id}</div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
+
+                      <td className="px-10 py-4">
                         <div className="text-sm text-gray-900 max-w-xs truncate">{issue.title}</div>
                         <div className="text-sm text-gray-500">{issue.reportedBy}</div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900">{issue.reportDate}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center justify-center">
-                          <Badge className={getPriorityColor(issue.priority)}>
-                            {issue.priority}
-                          </Badge>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center justify-center">
-                          <Badge className={getStatusColor(issue.status)}>
-                            {issue.status}
-                          </Badge>
-                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900">{issue.responsibleEmployee}</div>
@@ -489,7 +404,7 @@ export function NewsModule() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => openViewDialog(issue)}
-                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-50"
                               >
                                 <EyeIcon className="w-4 h-4" />
                               </Button>
@@ -503,7 +418,7 @@ export function NewsModule() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => openEditDialog(issue)}
-                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-50"
                               >
                                 <EditIcon className="w-4 h-4" />
                               </Button>
@@ -517,7 +432,7 @@ export function NewsModule() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => openDeleteDialog(issue)}
-                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-50"
                               >
                                 <TrashIcon className="w-4 h-4" />
                               </Button>
@@ -590,9 +505,6 @@ export function NewsModule() {
                   <div className="space-y-2">
                     <h2 className="text-2xl text-gray-900">{selectedIssue.title}</h2>
                     <div className="flex items-center gap-2">
-                      <Badge className={getPriorityColor(selectedIssue.priority)}>
-                        Prioridad: {selectedIssue.priority}
-                      </Badge>
                       <Badge className={getStatusColor(selectedIssue.status)}>
                         {selectedIssue.status}
                       </Badge>
@@ -634,27 +546,6 @@ export function NewsModule() {
                     <p className="text-gray-700 whitespace-pre-line">{selectedIssue.description}</p>
                   </CardContent>
                 </Card>
-
-                <div className="flex gap-2 pt-4">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setIsViewDialogOpen(false);
-                      openEditDialog(selectedIssue);
-                    }}
-                    className="flex-1 text-blue-600 border-blue-200 hover:bg-blue-50"
-                  >
-                    <EditIcon className="w-4 h-4 mr-2" />
-                    Editar Novedad
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => setIsViewDialogOpen(false)}
-                    className="flex-1"
-                  >
-                    Cerrar
-                  </Button>
-                </div>
               </div>
             )}
           </DialogContent>
@@ -694,22 +585,6 @@ export function NewsModule() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="edit-priority">Prioridad *</Label>
-                  <Select
-                    value={issueForm.priority}
-                    onValueChange={(value) => setIssueForm({ ...issueForm, priority: value as any })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Baja">Baja</SelectItem>
-                      <SelectItem value="Media">Media</SelectItem>
-                      <SelectItem value="Alta">Alta</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="edit-status">Estado *</Label>
@@ -722,9 +597,8 @@ export function NewsModule() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Registrada">Registrada</SelectItem>
-                      <SelectItem value="En proceso">En proceso</SelectItem>
-                      <SelectItem value="Solucionada">Solucionada</SelectItem>
-                      <SelectItem value="Cerrada">Cerrada</SelectItem>
+                      <SelectItem value="Aprobada">Aprobada</SelectItem>
+                      <SelectItem value="Rechazada">Rechazada</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -797,7 +671,7 @@ export function NewsModule() {
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDeleteIssue}
-                className="bg-red-600 hover:bg-red-700"
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 Eliminar
               </AlertDialogAction>
