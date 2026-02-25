@@ -14,7 +14,7 @@ import { PlusIcon, SearchIcon, EditIcon, TrashIcon, XIcon, CalendarIcon, BellIco
 import { toast } from 'sonner@2.0.3';
 
 interface Issue {
-  id: number;
+  // id: number;
   title: string;
   description: string;
   priority: 'Baja' | 'Media' | 'Alta';
@@ -27,7 +27,7 @@ interface Issue {
 export function NewsModule() {
   const [issues, setIssues] = useState<Issue[]>([
     {
-      id: 1,
+      // id: 1,
       title: 'Falla en sistema de facturación',
       description: 'El sistema de facturación no permite generar facturas electrónicas desde esta mañana. Los clientes están reportando demoras.',
       priority: 'Alta',
@@ -37,7 +37,7 @@ export function NewsModule() {
       reportDate: '2024-11-05'
     },
     {
-      id: 2,
+      //id: 2,
       title: 'Equipo de aire acondicionado requiere mantenimiento',
       description: 'El aire acondicionado de la sala de ventas no está enfriando adecuadamente. Se requiere revisión técnica.',
       priority: 'Media',
@@ -47,7 +47,7 @@ export function NewsModule() {
       reportDate: '2024-11-04'
     },
     {
-      id: 3,
+      //id: 3,
       title: 'Falta de inventario en productos de alta rotación',
       description: 'Se han agotado varias referencias de filtros de aceite que son de alta demanda. Clientes están solicitando.',
       priority: 'Alta',
@@ -57,7 +57,7 @@ export function NewsModule() {
       reportDate: '2024-11-03'
     },
     {
-      id: 4,
+      //id: 4,
       title: 'Actualización de precios en catálogo',
       description: 'Algunos productos tienen precios desactualizados en el sistema. Se requiere actualización urgente.',
       priority: 'Media',
@@ -67,7 +67,7 @@ export function NewsModule() {
       reportDate: '2024-11-01'
     },
     {
-      id: 5,
+      //id: 5,
       title: 'Mejora en proceso de recepción de mercancía',
       description: 'Propuesta para optimizar el proceso de recepción y registro de mercancía en bodega.',
       priority: 'Baja',
@@ -77,7 +77,7 @@ export function NewsModule() {
       reportDate: '2024-10-30'
     },
     {
-      id: 6,
+      //id: 6,
       title: 'Capacitación en nuevo sistema de ventas',
       description: 'Se requiere programar capacitación para el equipo de ventas sobre las nuevas funcionalidades del sistema.',
       priority: 'Media',
@@ -429,11 +429,11 @@ export function NewsModule() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">ID</th>
+                  {/* <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">ID</th> */}
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Título</th>
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Fecha</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Prioridad</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th>
+                  {/* <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Prioridad</th>
+                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th> */}
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Responsable</th>
                   <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
                 </tr>

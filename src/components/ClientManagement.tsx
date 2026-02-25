@@ -596,15 +596,20 @@ export function ClientManagement({ onNavigateToSales }) {
                   </div>
 
                   {/* Estado */}
-                  <div className="border-t border-gray-200 pt-6">
-                    <div className="flex items-center space-x-3">
-                      <Switch
-                        checked={formData.isActive}
-                        onCheckedChange={(checked) => setFormData({...formData, isActive: checked})}
-                      />
-                      <Label>Cliente activo</Label>
+                  {/* Estado - Solo visible al editar */}
+                  {editingClient && (
+                    <div className="border-t border-gray-200 pt-6">
+                      <div className="flex items-center space-x-3">
+                        <Switch
+                          checked={formData.isActive}
+                          onCheckedChange={(checked) =>
+                            setFormData({ ...formData, isActive: checked })
+                          }
+                        />
+                        <Label>Cliente activo</Label>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
                 
                 <div className="flex justify-end space-x-2 pt-4 border-t border-gray-200">
@@ -818,11 +823,14 @@ export function ClientManagement({ onNavigateToSales }) {
                         <Label className="text-gray-600">Estado</Label>
                         <div className="mt-1">
                           <Badge 
-                            variant={selectedClientForSummary.isActive ? 'default' : 'destructive'}
-                            className={selectedClientForSummary.isActive ? 'bg-blue-100 text-blue-800' : ''}
-                          >
-                            {selectedClientForSummary.isActive ? 'Activo' : 'Inactivo'}
-                          </Badge>
+                            className={
+                              selectedClientForSummary.isActive
+                                ? "bg-blue-100 text-blue-700 border-blue-200"
+                                : "bg-gray-100 text-gray-700 border-gray-200"
+                              }
+                            >
+                              {selectedClientForSummary.isActive ? 'Activo' : 'Inactivo'}
+                            </Badge>
                         </div>
                       </div>
                     </CardContent>

@@ -69,7 +69,7 @@ export function OrderModule() {
     deliveryCity: 'Medellín',
     deliveryInstructions: '',
     paymentMethod: 'Efectivo',
-    status: 'En proceso',
+    status: 'completo',
     items: [],
     notes: ''
   });
@@ -85,7 +85,7 @@ export function OrderModule() {
         id: 'ORD-2024-001',
         clientName: 'Carlos Medina',
         orderType: 'Pedido',
-        status: 'En proceso',
+        status: 'Completo',
         isCompleted: false,
         total: 320000,
         date: '2024-01-15',
@@ -111,7 +111,7 @@ export function OrderModule() {
         id: 'ORD-2024-003',
         clientName: 'María González',
         orderType: 'Pedido',
-        status: 'En proceso',
+        status: 'Completo',
         isCompleted: false,
         total: 450000,
         date: '2024-01-13',
@@ -137,7 +137,7 @@ export function OrderModule() {
         id: 'ORD-2024-005',
         clientName: 'Roberto Sánchez',
         orderType: 'Pedido',
-        status: 'En proceso',
+        status: 'Completo',
         isCompleted: false,
         total: 675000,
         date: '2024-01-12',
@@ -163,7 +163,7 @@ export function OrderModule() {
         id: 'ORD-2024-007',
         clientName: 'Andrés Castro',
         orderType: 'Pedido',
-        status: 'En proceso',
+        status: 'Completo',
         isCompleted: false,
         total: 920000,
         date: '2024-01-11',
@@ -176,7 +176,7 @@ export function OrderModule() {
         id: 'ORD-2024-008',
         clientName: 'Luis Fernando Vélez',
         orderType: 'Pedido',
-        status: 'Anulado',
+        status: 'Cancelado',
         isCompleted: false,
         total: 540000,
         date: '2024-01-09',
@@ -274,7 +274,7 @@ export function OrderModule() {
       id: `ORD-2024-${String(orders.length + 1).padStart(3, '0')}`,
       clientName: orderForm.clientName,
       orderType: 'Pedido',
-      status: 'En proceso',
+      status: 'Pendiente',
       isCompleted: false,
       total: Math.round(total),
       date: new Date().toISOString().split('T')[0],
@@ -302,7 +302,7 @@ export function OrderModule() {
       deliveryCity: 'Medellín',
       deliveryInstructions: '',
       paymentMethod: 'Efectivo',
-      status: 'En proceso',
+      status: 'Pendiente',
       items: [],
       notes: ''
     });
@@ -451,11 +451,9 @@ export function OrderModule() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Pendiente': return 'bg-yellow-100 text-yellow-700 border-yellow-300';
-      case 'En proceso': return 'bg-blue-100 text-blue-700 border-blue-300';
-      case 'Completo': return 'bg-green-100 text-green-700 border-green-300';
-      case 'Cancelado': return 'bg-red-100 text-red-700 border-red-300';
-      case 'Anulado': return 'bg-red-100 text-red-700 border-red-300';
+      case 'Pendiente': return 'bg-blue-50 text-blue-700 border-blue-5';
+      case 'Completo': return 'bg-blue-100 text-blue-700 border-blue-5';
+      case 'Cancelado': return 'bg-gray-100 text-gray-700 border-gray-5';
       default: return 'bg-gray-100 text-gray-700 border-gray-300';
     }
   };
@@ -580,7 +578,7 @@ export function OrderModule() {
                                       size="sm"
                                       variant="outline"
                                       onClick={() => removeItemFromOrder(item.id)}
-                                      className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 w-8 h-8 p-0"
+                                      className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:border-blue-300 w-8 h-8 p-0"
                                     >
                                       <XIcon className="w-3 h-3" />
                                     </Button>
@@ -592,7 +590,7 @@ export function OrderModule() {
                                         size="sm"
                                         variant="outline"
                                         onClick={() => updateItemQuantity(item.id, item.quantity - 1)}
-                                        className="w-8 h-8 p-0 border-gray-300 hover:border-red-300 hover:bg-red-50"
+                                        className="w-8 h-8 p-0 border-gray-300 hover:border-blue-300 hover:bg-blue-50"
                                       >
                                         -
                                       </Button>
@@ -602,7 +600,7 @@ export function OrderModule() {
                                         size="sm"
                                         variant="outline"
                                         onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
-                                        className="w-8 h-8 p-0 border-gray-300 hover:border-green-300 hover:bg-green-50"
+                                        className="w-8 h-8 p-0 border-gray-300 hover:border-blue-300 hover:bg-blue-50"
                                       >
                                         +
                                       </Button>
@@ -850,7 +848,6 @@ export function OrderModule() {
                 <SelectContent>
                   <SelectItem value="all">Todos</SelectItem>
                   <SelectItem value="Pendiente">Pendiente</SelectItem>
-                  <SelectItem value="En proceso">En proceso</SelectItem>
                   <SelectItem value="Completo">Completo</SelectItem>
                   <SelectItem value="Cancelado">Cancelado</SelectItem>
                 </SelectContent>
@@ -872,7 +869,6 @@ export function OrderModule() {
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Cliente</th>
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Fecha</th>
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Total</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th>
                   <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
@@ -889,7 +885,7 @@ export function OrderModule() {
                   </tr>
                 ) : (
                   currentOrders.map((order) => (
-                    <tr key={order.id} className={`hover:bg-gray-50 transition-colors ${order.status === 'Anulado' || order.status === 'Cancelado' ? 'bg-red-50/30' : ''}`}>
+                    <tr key={order.id} className={`hover:bg-gray-50 transition-colors ${order.status === 'Anulado' || order.status === 'Cancelado' ? 'bg-blue-50/30' : ''}`}>
                       <td className="px-6 py-4">
                         <div className="flex items-center">
                           <div className="text-sm text-blue-600">{order.id}</div>
@@ -901,18 +897,13 @@ export function OrderModule() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900">{order.date}</div>
-                        <div className="text-sm text-gray-500">{order.items} items</div>
+                        
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900">${order.total.toLocaleString()}</div>
+                        <div className="text-sm text-gray-500">{order.items} productos</div>
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center justify-center">
-                          <Badge className={getStatusColor(order.status)}>
-                            {order.status}
-                          </Badge>
-                        </div>
-                      </td>
+                      
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center space-x-2">
                           <Tooltip>
@@ -921,7 +912,7 @@ export function OrderModule() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleViewDetail(order)}
-                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-50"
                               >
                                 <EyeIcon className="w-4 h-4" />
                               </Button>
@@ -935,7 +926,7 @@ export function OrderModule() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleEdit(order)}
-                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-50"
                               >
                                 <EditIcon className="w-4 h-4" />
                               </Button>
@@ -949,7 +940,7 @@ export function OrderModule() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleViewPDF(order)}
-                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-50"
                               >
                                 <FileTextIcon className="w-4 h-4" />
                               </Button>
@@ -964,7 +955,7 @@ export function OrderModule() {
                                   variant="outline"
                                   size="sm"
                                   onClick={() => handleCancel(order)}
-                                  className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
+                                  className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-red-50"
                                 >
                                   <XCircleIcon className="w-4 h-4" />
                                 </Button>
@@ -1087,12 +1078,12 @@ export function OrderModule() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">Total:</p>
-                        <p className="text-green-600 text-xl">${selectedOrderForView.total.toLocaleString()}</p>
+                        <p className="text-blue-600 text-xl">${selectedOrderForView.total.toLocaleString()}</p>
                       </div>
                       {selectedOrderForView.validUntil && (
                         <div>
                           <p className="text-sm text-gray-500">Válida hasta:</p>
-                          <p className="text-orange-600">{selectedOrderForView.validUntil}</p>
+                          <p className="text-blue-600">{selectedOrderForView.validUntil}</p>
                         </div>
                       )}
                     </CardContent>
@@ -1111,21 +1102,21 @@ export function OrderModule() {
                 )}
 
                 {(selectedOrderForView.status === 'Anulado' || selectedOrderForView.status === 'Cancelado') && selectedOrderForView.cancelReason && (
-                  <Card className="border-red-200 bg-red-50">
+                  <Card className="border-blue-200 bg-blue-50">
                     <CardHeader>
-                      <CardTitle className="text-lg text-red-700 flex items-center gap-2">
+                      <CardTitle className="text-lg text-blue-700 flex items-center gap-2">
                         <XCircleIcon className="w-5 h-5" />
                         Información de Cancelación
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <div>
-                        <p className="text-sm text-red-600">Motivo de Cancelación:</p>
+                        <p className="text-sm text-blue-600">Motivo de Cancelación:</p>
                         <p className="text-gray-900 mt-1">{selectedOrderForView.cancelReason}</p>
                       </div>
                       {selectedOrderForView.cancelledAt && (
                         <div>
-                          <p className="text-sm text-red-600">Fecha de Cancelación:</p>
+                          <p className="text-sm text-blue-600">Fecha de Cancelación:</p>
                           <p className="text-gray-900 mt-1">{selectedOrderForView.cancelledAt}</p>
                         </div>
                       )}
@@ -1311,7 +1302,6 @@ export function OrderModule() {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="Pendiente">Pendiente</SelectItem>
-                            <SelectItem value="En proceso">En proceso</SelectItem>
                             <SelectItem value="Completo">Completo</SelectItem>
                             <SelectItem value="Cancelado">Cancelado</SelectItem>
                           </SelectContent>
@@ -1383,7 +1373,7 @@ export function OrderModule() {
         <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle className="flex items-center gap-2 text-red-600">
+              <AlertDialogTitle className="flex items-center gap-2 text-blue-600">
                 <AlertTriangleIcon className="w-5 h-5" />
                 Cancelar Pedido
               </AlertDialogTitle>
@@ -1431,7 +1421,7 @@ export function OrderModule() {
                   />
                 </div>
                 
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-blue-600">
                   El pedido no será eliminado, pero cambiará su estado a "Cancelado" y no podrá ser procesado.
                 </p>
               </AlertDialogDescription>
@@ -1445,7 +1435,7 @@ export function OrderModule() {
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={confirmCancel}
-                className="bg-red-600 hover:bg-red-700"
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 Cancelar Pedido
               </AlertDialogAction>
