@@ -50,18 +50,18 @@ export function LoginPage({ onLogin }) {
 
   // Register form state
   const [registerForm, setRegisterForm] = useState({
-    email: '',
     firstName: '',
     lastName: '',
     businessName: '',
+    documentType: 'CC', // CC, CE, Pasaporte, RUT, NIT
+    documentNumber: '',
     phone: '',
-    password: '',
-    confirmPassword: '',
+    email: '',
     address: '',
     city: '',
     personType: 'natural', // 'natural' or 'empresa'
-    documentType: 'CC', // CC, CE, Pasaporte, RUT, NIT
-    documentNumber: ''
+    password: '',
+    confirmPassword: '',
   });
 
   // Password validation state
@@ -564,35 +564,12 @@ export function LoginPage({ onLogin }) {
                     </Select>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {/* Correo electrónico */}
-                    <div className="space-y-1">
-                      <Label htmlFor="register-email" className="text-sm">
-                        Correo electrónico <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="register-email"
-                        type="email"
-                        value={registerForm.email}
-                        onChange={(e) => setRegisterForm({ ...registerForm, email: e.target.value })}
-                        placeholder="tu@correo.com"
-                        className={`h-9 text-sm ${!isEmailUnique(registerForm.email) && registerForm.email ? 'border-red-500' : ''}`}
-                        required
-                      />
-                      {registerForm.email && !isEmailUnique(registerForm.email) && (
-                        <p className="text-xs text-red-500 flex items-center gap-1">
-                          <AlertCircleIcon className="w-3 h-3" />
-                          Este correo ya está registrado
-                        </p>
-                      )}
-                    </div>
-
                     {/* Nombre o Razón Social - Dinámico */}
                     {registerForm.personType === 'natural' ? (
                       <>
                         <div className="space-y-1">
                           <Label htmlFor="register-firstName" className="text-sm">
-                            Nombre <span className="text-red-500">*</span>
+                            Nombres <span className="text-red-500">*</span>
                           </Label>
                           <Input
                             id="register-firstName"
@@ -606,7 +583,7 @@ export function LoginPage({ onLogin }) {
                         </div>
                         <div className="space-y-1 md:col-span-1">
                           <Label htmlFor="register-lastName" className="text-sm">
-                            Apellido <span className="text-red-500">*</span>
+                            Apellidos <span className="text-red-500">*</span>
                           </Label>
                           <Input
                             id="register-lastName"
@@ -680,6 +657,29 @@ export function LoginPage({ onLogin }) {
                         className="h-9 text-sm"
                         required
                       />
+                    </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {/* Correo electrónico */}
+                    <div className="space-y-1">
+                      <Label htmlFor="register-email" className="text-sm">
+                        Correo electrónico <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="register-email"
+                        type="email"
+                        value={registerForm.email}
+                        onChange={(e) => setRegisterForm({ ...registerForm, email: e.target.value })}
+                        placeholder="tu@correo.com"
+                        className={`h-9 text-sm ${!isEmailUnique(registerForm.email) && registerForm.email ? 'border-red-500' : ''}`}
+                        required
+                      />
+                      {registerForm.email && !isEmailUnique(registerForm.email) && (
+                        <p className="text-xs text-red-500 flex items-center gap-1">
+                          <AlertCircleIcon className="w-3 h-3" />
+                          Este correo ya está registrado
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-1">

@@ -26,7 +26,7 @@ export function ConfigurationModule() {
         </div>
         
         <div className="flex items-center gap-4">
-          <Badge variant="outline" className="flex items-center gap-2 text-blue-600 border-blue-200 bg-blue-50">
+          <Badge variant="outline" className="flex items-center gap-2 text-blue-900 border-blue-200 bg-blue-50">
             <SettingsIcon className="w-4 h-4" />
             Configuración
           </Badge>

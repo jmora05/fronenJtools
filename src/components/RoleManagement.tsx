@@ -231,7 +231,8 @@ export function RoleManagement() {
           </div>
           <Dialog open={showModal} onOpenChange={setShowModal}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700" size="lg">
+              {/* roles button create rol */}
+              <Button className="bg-blue-600 hover:bg-blue-900" size="lg">
                 <PlusIcon className="w-4 h-4 mr-2" />
                 Nuevo Rol
               </Button>
@@ -271,8 +272,8 @@ export function RoleManagement() {
                           key={module.id}
                           className={`cursor-pointer transition-all hover:shadow-md ${
                             formData.permissions.includes(module.id) 
-                              ? 'border-blue-500 bg-blue-50' 
-                              : 'border-gray-200'
+                              ? 'bg-blue-50' 
+                              : 'border-blue-200'
                           }`}
                           onClick={() => togglePermission(module.id)}
                         >
@@ -333,10 +334,7 @@ export function RoleManagement() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">ID</th>
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Nombre Rol</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Cant. Permisos</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th>
                   <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
@@ -350,28 +348,14 @@ export function RoleManagement() {
                 ) : (
                   currentRoles.map((role) => (
                     <tr key={role.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 text-sm text-gray-900">{role.id}</td>
                       <td className="px-6 py-4">
+                        {/* nombre de rol y cantidad de permisos */}
                         <div className="flex items-center space-x-2">
-                          <ShieldIcon className="w-5 h-5 text-blue-600" />
-                          <span className="text-sm text-gray-900">{role.name}</span>
+                          <ShieldIcon className="w-5 h-5 text-blue-600 px-6 py-4 text-center" />
+                          <span className="text-sm text-gray-900">{role.name}<br/><Badge variant="secondary">{role.permissionCount}</Badge></span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-center">
-                        <Badge variant="secondary">{role.permissionCount}</Badge>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <div className="flex items-center justify-center space-x-2">
-                          <Switch
-                            checked={role.isActive}
-                            onCheckedChange={() => toggleStatus(role.id)}
-                          />
-                          <span className="text-sm text-gray-600">
-                            {role.isActive ? 'Activo' : 'Inactivo'}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-4">
                         <div className="flex items-center justify-center space-x-2">
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -379,7 +363,7 @@ export function RoleManagement() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleViewDetail(role)}
-                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-900"
                               >
                                 <EyeIcon className="w-4 h-4" />
                               </Button>
@@ -393,7 +377,7 @@ export function RoleManagement() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleEdit(role)}
-                                className="text-orange-600 hover:text-orange-700 border-orange-200 hover:border-orange-300 hover:bg-orange-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-900"
                               >
                                 <EditIcon className="w-4 h-4" />
                               </Button>
@@ -407,7 +391,7 @@ export function RoleManagement() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleDelete(role)}
-                                className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-900"
                               >
                                 <TrashIcon className="w-4 h-4" />
                               </Button>
@@ -522,7 +506,7 @@ export function RoleManagement() {
         <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle className="flex items-center gap-2 text-red-600">
+              <AlertDialogTitle className="flex items-center gap-2 text-blue-600">
                 <AlertTriangleIcon className="w-5 h-5" />
                 Confirmar Eliminación
               </AlertDialogTitle>
@@ -542,14 +526,13 @@ export function RoleManagement() {
                     </div>
                   </div>
                 )}
-                <p className="text-sm text-red-600">Esta acción no se puede deshacer.</p>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel onClick={cancelDelete}>Cancelar</AlertDialogCancel>
               <AlertDialogAction
                 onClick={confirmDelete}
-                className="bg-red-600 hover:bg-red-700"
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 Eliminar Rol
               </AlertDialogAction>

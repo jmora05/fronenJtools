@@ -423,12 +423,8 @@ export function UserManagement() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">ID</th>
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Usuario</th>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Email</th>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Teléfono</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Tipo</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th>
+                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">contacto</th>
                   <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
@@ -442,33 +438,17 @@ export function UserManagement() {
                 ) : (
                   currentUsers.map((user) => (
                     <tr key={user.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 text-sm text-gray-900">{user.id}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-2">
                           <UserIcon className="w-5 h-5 text-blue-600" />
                           <span className="text-sm text-gray-900">
-                            {user.firstName} {user.lastName}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{user.email}</td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{user.phone}</td>
-                      <td className="px-6 py-4 text-center">
-                        <Badge variant={user.userType === 'Administrador' ? 'default' : 'secondary'}>
+                            {user.firstName} {user.lastName}<br/><Badge variant={user.userType === 'Administrador' ? 'default' : 'secondary'}>
                           {user.userType}
                         </Badge>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <div className="flex items-center justify-center space-x-2">
-                          <Switch
-                            checked={user.isActive}
-                            onCheckedChange={() => toggleStatus(user.id)}
-                          />
-                          <span className="text-sm text-gray-600">
-                            {user.isActive ? 'Activo' : 'Inactivo'}
                           </span>
                         </div>
                       </td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{user.email}<br/>{user.phone}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center space-x-2">
                           <Tooltip>
@@ -477,7 +457,7 @@ export function UserManagement() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleViewDetail(user)}
-                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-900"
                               >
                                 <EyeIcon className="w-4 h-4" />
                               </Button>
@@ -491,7 +471,7 @@ export function UserManagement() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleEdit(user)}
-                                className="text-orange-600 hover:text-orange-700 border-orange-200 hover:border-orange-300 hover:bg-orange-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-900"
                               >
                                 <EditIcon className="w-4 h-4" />
                               </Button>
@@ -505,7 +485,7 @@ export function UserManagement() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleDelete(user)}
-                                className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
+                                className="text-blue-900 hover:text-blue-900 border-blue-900 hover:border-blue-900 hover:bg-blue-900"
                               >
                                 <TrashIcon className="w-4 h-4" />
                               </Button>
@@ -617,7 +597,7 @@ export function UserManagement() {
         <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle className="flex items-center gap-2 text-red-600">
+              <AlertDialogTitle className="flex items-center gap-2 text-blue-900">
                 <AlertTriangleIcon className="w-5 h-5" />
                 Confirmar Eliminación
               </AlertDialogTitle>
@@ -643,14 +623,13 @@ export function UserManagement() {
                     </div>
                   </div>
                 )}
-                <p className="text-sm text-red-600">Esta acción no se puede deshacer.</p>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancelar</AlertDialogCancel>
               <AlertDialogAction
                 onClick={confirmDelete}
-                className="bg-red-600 hover:bg-red-700"
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 Eliminar Usuario
               </AlertDialogAction>
