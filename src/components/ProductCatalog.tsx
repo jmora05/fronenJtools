@@ -343,8 +343,8 @@ export function ProductCatalog() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl text-gray-900 mb-2">Gestión de Productos</h1>
-          <p className="text-gray-600">Administra el catálogo completo de productos con sus requerimientos de insumos</p>
+          <h1 className="text-2xl text-blue-900 font-bold mb-2">Gestión de Productos</h1>
+          <p className="text-blue-800">Administra el catálogo completo de productos con sus requerimientos de insumos</p>
         </div>
         <Button
           onClick={() => setShowModal(true)}
@@ -425,19 +425,16 @@ export function ProductCatalog() {
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b">
+                <thead className="bg-blue-900 border-b border-blue-900">
                   <tr>
-                    <th className="text-left py-4 px-6 text-gray-900">Producto</th>
-                    <th className="text-left py-4 px-6 text-gray-900">Referencia</th>
-                    <th className="text-left py-4 px-6 text-gray-900">Precio</th>
-                    <th className="text-left py-4 px-6 text-gray-900">Stock</th>
-                    <th className="text-left py-4 px-6 text-gray-900">Estado</th>
-                    <th className="text-left py-4 px-6 text-gray-900">Acciones</th>
+                    <th className="text-left py-4 px-6 text-black font-semibold">Producto</th>        
+                    <th className="text-left py-4 px-6 text-black font-semibold">Precio / Stock</th>
+                    <th className="text-left py-4 px-6 text-black font-semibold">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentProducts.map((product) => (
-                    <tr key={product.id} className="border-b hover:bg-gray-50">
+                    <tr key={product.id} className="border-b border-blue-100 hover:bg-blue-50 transition-colors">
                       <td className="py-4 px-6">
                         <div className="flex items-center space-x-3">
                           <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100">
@@ -447,62 +444,52 @@ export function ProductCatalog() {
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div>
-                            <div className="text-gray-900">{product.name}</div>
+                          <div className="flex flex-col">
+                            <span className="font-semibold text-gray-900">
+                              {product.name}
+                            </span>
+                            <span className="text-sm text-gray-500">
+                              Ref: {product.reference}
+                            </span>
                           </div>
                         </div>
                       </td>
-                      <td className="py-4 px-6">
-                        <code className="bg-gray-100 px-2 py-1 rounded text-sm">
-                          {product.reference}
-                        </code>
-                      </td>
-                      <td className="py-4 px-6 text-blue-600">
-                        ${product.price.toLocaleString()}
-                      </td>
-                      <td className="py-4 px-6">
-                        <Badge 
-                          variant={product.stock > 10 ? 'default' : product.stock > 5 ? 'secondary' : 'destructive'}
-                        >
-                          {product.stock} und
-                        </Badge>
-                      </td>
-                      <td className="py-4 px-6">
-                        <div className="flex items-center space-x-2">
-                          <Switch
-                            checked={product.status}
-                            onCheckedChange={() => toggleStatus(product.id)}
-                          />
-                          <span className={`text-sm ${product.status ? 'text-green-600' : 'text-red-600'}`}>
-                            {product.status ? 'Activo' : 'Inactivo'}
+                        <td className="py-4 px-6">
+                        <div className="flex flex-col">
+                          <span className="text-blue-600 font-semibold">
+                            ${product.price.toLocaleString()}
+                          </span>
+                          <span className="text-sm text-gray-500">
+                            Stock: {product.stock} und
                           </span>
                         </div>
                       </td>
+                                            
                       <td className="py-4 px-6">
                         <div className="flex items-center space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => viewDetails(product)}
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEdit(product)}
-                            className="text-blue-600 hover:text-blue-700"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDelete(product.id)}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                      <Button
+                      size="sm"
+                      onClick={() => viewDetails(product)}
+                      className="bg-white text-blue-600 border border-black hover:shadow-md hover:bg-blue-50 transition-all"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      onClick={() => handleEdit(product)}
+                      className="bg-white text-blue-600 border border-black hover:shadow-md hover:bg-blue-50 transition-all"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      onClick={() => handleDelete(product.id)}
+                      className="bg-white text-blue-600 border border-black hover:shadow-md hover:bg-blue-50 transition-all"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                         </div>
                       </td>
                     </tr>
@@ -578,15 +565,6 @@ export function ProductCatalog() {
                   >
                     {product.stock} und
                   </Badge>
-                </div>
-                <div className="absolute top-2 left-2">
-                  <div className="flex items-center space-x-1">
-                    {product.status ? (
-                      <ToggleRight className="w-5 h-5 text-green-600" />
-                    ) : (
-                      <ToggleLeft className="w-5 h-5 text-red-600" />
-                    )}
-                  </div>
                 </div>
               </div>
               <CardContent className="p-4">
