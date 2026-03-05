@@ -71,7 +71,7 @@ export function ProductionOrderModule() {
     {
       id: 1,
       orderCode: 'OP-2024-001',
-      product: 'Filtro de Aceite Premium',
+      product: 'Filtro de Aceitee Premium',
       productCode: 'FAP-001',
       quantity: 500,
       responsible: 'Carlos Mendoza',
