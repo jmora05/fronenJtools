@@ -31,7 +31,6 @@ export function ProductCategoryManagement() {
       name: 'Frenos',
       description: 'Componentes del sistema de frenado',
       code: 'FRE',
-      status: 'active',
       totalProducts: 45,
       createdDate: '2024-01-15',
       updatedDate: '2024-01-15'
@@ -213,26 +212,13 @@ export function ProductCategoryManagement() {
     toast.success('Categoría eliminada exitosamente');
   };
 
-  const handleToggleStatus = (category) => {
-    setCategories(prev => prev.map(cat => 
-      cat.id === category.id 
-        ? { 
-            ...cat, 
-            status: cat.status === 'active' ? 'inactive' : 'active',
-            updatedDate: new Date().toISOString().split('T')[0]
-          }
-        : cat
-    ));
-    toast.success(`Estado de categoría ${category.status === 'active' ? 'desactivado' : 'activado'}`);
-  };
 
   const openEditDialog = (category) => {
     setSelectedCategory(category);
     setFormData({
       name: category.name,
       description: category.description,
-      code: category.code,
-      status: category.status
+      code: category.code
     });
     setIsEditDialogOpen(true);
   };
@@ -322,28 +308,53 @@ export function ProductCategoryManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <TagIcon className="w-8 h-8 text-blue-600" />
+          <TagIcon className="w-8 h-8 text-blue-900" />
           <div>
-            <h1 className="text-3xl text-gray-900">Categorías de productos</h1>
-            <p className="text-gray-500">Gestión completa de categorías de productos</p>
+            <h1 className="text-3xl font-bold text-blue-900">Categorías de productos</h1>
+            <p className="text-gray-800">Gestión completa de categorías de productos</p>
           </div>
         </div>
-        <Button onClick={openCreateDialog} className="bg-blue-600 hover:bg-blue-700">
-          <PlusIcon className="w-4 h-4 mr-2" />
-          Nueva categoría
-        </Button>
+        <Button
+        onClick={openCreateDialog}
+        className="bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg transition-all"
+      >
+        <PlusIcon className="w-4 h-4 mr-2 text-white" />
+        Nueva categoría
+      </Button>
       </div>
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <Card className="border border-blue-100">
+    <CardContent className="p-4">
+      <p className="text-sm text-blue-500">Total categorías</p>
+      <p className="text-2xl font-bold text-blue-900">
+        {categories.length}
+      </p>
+    </CardContent>
+  </Card>
 
+  <Card className="border border-blue-100">
+    <CardContent className="p-4">
+      <p className="text-sm text-gray-500">Total productos asociados</p>
+      <p className="text-2xl font-bold text-blue-900">
+        {categories.reduce((acc, cat) => acc + cat.totalProducts, 0)}
+      </p>
+    </CardContent>
+  </Card>
+
+  <Card className="border border-blue-100">
+    <CardContent className="p-4">
+      <p className="text-sm text-gray-500">Promedio productos por categoría</p>
+      <p className="text-2xl font-bold text-blue-900">
+        {Math.round(
+          categories.reduce((acc, cat) => acc + cat.totalProducts, 0) /
+          categories.length
+        )}
+      </p>
+    </CardContent>
+  </Card>
+</div>
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="list">Listar categorías</TabsTrigger>
-          <TabsTrigger value="create">Crear categoría</TabsTrigger>
-          <TabsTrigger value="search">Consultar categoría</TabsTrigger>
-          <TabsTrigger value="update">Actualizar categoría</TabsTrigger>
-          <TabsTrigger value="status">Cambiar estado</TabsTrigger>
-        </TabsList>
-
         {/* Listar categorías */}
         <TabsContent value="list" className="space-y-4">
           <Card>
@@ -355,9 +366,6 @@ export function ProductCategoryManagement() {
                     Gestione todas las categorías de productos desde aquí
                   </CardDescription>
                 </div>
-                <Badge variant="outline" className="text-blue-600 border-blue-200">
-                  {filteredCategories.length} categorías
-                </Badge>
               </div>
             </CardHeader>
             <CardContent>
@@ -390,24 +398,29 @@ export function ProductCategoryManagement() {
               {/* Categories Table */}
               <div className="bg-white rounded-lg border">
                 <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Nombre categoría</TableHead>
-                      <TableHead>Descripción</TableHead>
-                      <TableHead>Código</TableHead>
-                      <TableHead>Estado</TableHead>
-                      <TableHead>Productos</TableHead>
-                      <TableHead>Acciones</TableHead>
-                    </TableRow>
-                  </TableHeader>
+                  <TableHeader className="bg-blue-900">
+  <TableRow>
+    <TableHead className="text-black font-semibold">Categoría</TableHead>
+    <TableHead className="text-black font-semibold">Descripción</TableHead>
+    <TableHead className="text-black font-semibold">Código / Productos</TableHead>
+    <TableHead className="text-black font-semibold">Acciones</TableHead>
+  </TableRow>
+</TableHeader>
                   <TableBody>
                     {filteredCategories.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((category) => (
-                      <TableRow key={category.id}>
+                      <TableRow key={category.id} className="hover:bg-blue-50 transition-colors">
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <TagIcon className="w-4 h-4 text-blue-600" />
                             <div>
-                              <div className="text-gray-900">{category.name}</div>
+                              <div>
+  <div className="font-semibold text-blue-900">
+    {category.name}
+  </div>
+  <div className="text-xs text-gray-500">
+    Creado: {new Date(category.createdDate).toLocaleDateString('es-CO')}
+  </div>
+</div>
                             </div>
                           </div>
                         </TableCell>
@@ -417,29 +430,22 @@ export function ProductCategoryManagement() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="text-blue-600">
-                            {category.code}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            {getStatusBadge(category.status)}
-                            <Switch
-                              checked={category.status === 'active'}
-                              onCheckedChange={() => handleToggleStatus(category)}
-                            />
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="text-gray-900">{category.totalProducts}</div>
-                        </TableCell>
+  <div className="flex flex-col">
+    <span className="text-blue-900 font-semibold">
+      {category.code}
+    </span>
+    <span className="text-sm text-gray-500">
+      {category.totalProducts} productos
+    </span>
+  </div>
+</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => openViewDialog(category)}
-                              className="hover:bg-blue-50 hover:border-blue-200"
+                              className="bg-white border border-blue-900 text-blue-900 hover:bg-blue-50 hover:shadow-md transition-all"
                             >
                               <EyeIcon className="w-4 h-4" />
                             </Button>
@@ -447,7 +453,7 @@ export function ProductCategoryManagement() {
                               variant="outline"
                               size="sm"
                               onClick={() => openEditDialog(category)}
-                              className="hover:bg-blue-50 hover:border-blue-200"
+                              className="bg-white border border-blue-900 text-blue-900 hover:bg-blue-50 hover:shadow-md transition-all"
                             >
                               <EditIcon className="w-4 h-4" />
                             </Button>
@@ -455,7 +461,7 @@ export function ProductCategoryManagement() {
                               variant="outline"
                               size="sm"
                               onClick={() => openDeleteDialog(category)}
-                              className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
+                              className="bg-white border border-blue-900 text-blue-900 hover:bg-blue-50 hover:shadow-md transition-all"
                             >
                               <TrashIcon className="w-4 h-4" />
                             </Button>
@@ -539,10 +545,13 @@ export function ProductCategoryManagement() {
                 <Button onClick={resetForm} variant="outline" className="flex-1">
                   Limpiar formulario
                 </Button>
-                <Button onClick={handleCreateCategory} className="flex-1 bg-blue-600 hover:bg-blue-700">
-                  Crear categoría
-                </Button>
-              </div>
+                <Button
+  onClick={handleCreateCategory}
+  className="!bg-blue-600 !text-white hover:!bg-blue-700 hover:!text-white shadow-md hover:shadow-lg transition-all"
+>
+  Crear categoría
+</Button>
+                </div>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -570,7 +579,7 @@ export function ProductCategoryManagement() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {filteredCategories.map((category) => (
-                    <Card key={category.id} className="border border-gray-200">
+                    <Card key={category.id} className="border border-blue-100 hover:border-blue-900 hover:shadow-md transition-all">
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
@@ -678,7 +687,7 @@ export function ProductCategoryManagement() {
       {/* Dialogs */}
       {/* Create Dialog */}
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] rounded-xl border border-blue-100 shadow-xl">
           <DialogHeader>
             <DialogTitle>Crear nueva categoría</DialogTitle>
             <DialogDescription>
@@ -687,19 +696,27 @@ export function ProductCategoryManagement() {
           </DialogHeader>
           <CategoryFormContent />
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-              Cancelar
-            </Button>
-            <Button onClick={handleCreateCategory} className="bg-blue-600 hover:bg-blue-700">
-              Crear categoría
-            </Button>
+            <Button
+  variant="ghost"
+  onClick={() => setIsCreateDialogOpen(false)}
+  className="text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-all"
+>
+  Cancelar
+</Button>
+            <Button
+  variant="default"
+  onClick={handleCreateCategory}
+  className="bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg transition-all"
+>
+  Crear categoría
+</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] rounded-xl border border-blue-100 shadow-xl">
           <DialogHeader>
             <DialogTitle>Editar categoría</DialogTitle>
             <DialogDescription>
@@ -711,9 +728,12 @@ export function ProductCategoryManagement() {
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
               Cancelar
             </Button>
-            <Button onClick={handleEditCategory} className="bg-blue-600 hover:bg-blue-700">
-              Guardar cambios
-            </Button>
+            <Button
+            onClick={handleEditCategory}
+            className="bg-blue-600 hover:bg-blue-700 text-white border border-blue-900 shadow-md hover:shadow-lg transition-all"
+          >
+            Guardar cambios
+          </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -789,7 +809,7 @@ export function ProductCategoryManagement() {
             </Button>
             <Button 
               onClick={handleDeleteCategory} 
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               Eliminar categoría
             </Button>

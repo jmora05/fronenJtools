@@ -7,7 +7,7 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Textarea } from './ui/textarea';
-import { PlusIcon, SearchIcon, ShoppingCartIcon, EyeIcon, XIcon, FileDown, CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { PlusIcon, SearchIcon, ShoppingCartIcon, EyeIcon, Trash2, FileDown, CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function PurchaseModule() {
   const [purchases, setPurchases] = useState([]);
@@ -229,15 +229,9 @@ export function PurchaseModule() {
     purchase.status !== 'Anulada' ? sum + purchase.total : sum, 0
   );
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Pendiente': return 'bg-yellow-100 text-yellow-700';
-      case 'En tránsito': return 'bg-blue-100 text-blue-700';
-      case 'Completada': return 'bg-green-100 text-green-700';
-      case 'Anulada': return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
+  const getStatusColor = () => {
+  return 'bg-blue-100 text-blue-700 border border-blue-200';
+};
 
   const totalPages = Math.ceil(filteredPurchases.length / itemsPerPage);
   const currentPurchases = filteredPurchases.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -288,8 +282,12 @@ export function PurchaseModule() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl text-gray-900 mb-2">Módulo de Compras de insumos</h1>
-          <p className="text-gray-600">Gestiona las compras y adquisiciones de insumos</p>
+          <h1 className="text-3xl font-bold text-blue-900 mb-1">
+            Compras de Insumos
+          </h1>
+          <p className="text-blue-600">
+            Gestión y control de adquisiciones
+          </p>
         </div>
         
         <Button 
@@ -356,7 +354,7 @@ export function PurchaseModule() {
               </div>
             ) : (
               currentPurchases.map((purchase) => (
-                <div key={purchase.id} className="py-4 hover:bg-gray-50 transition-colors">
+                <div key={purchase.id} className="py-5 hover:bg-blue-50 transition-all rounded-lg">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-4 mb-3">
@@ -416,7 +414,7 @@ export function PurchaseModule() {
                           setViewingPurchase(purchase);
                           setShowDetailModal(true);
                         }}
-                        className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                        className="bg-white text-blue-900 border border-blue-900 hover:shadow-md hover:bg-blue-900 transition-all"
                       >
                         <EyeIcon className="w-4 h-4" />
                       </Button>
@@ -424,18 +422,17 @@ export function PurchaseModule() {
                         variant="outline"
                         size="sm"
                         onClick={() => alert('Generando PDF...')}
-                        className="text-green-600 border-green-200 hover:bg-green-50"
+                        className="bg-white text-blue-900 border border-blue-900 hover:shadow-md hover:bg-blue-900 transition-all"
                       >
                         <FileDown className="w-4 h-4" />
                       </Button>
                       {purchase.status !== 'Anulada' && (
                         <Button
-                          variant="outline"
                           size="sm"
                           onClick={() => cancelPurchase(purchase.id)}
-                          className="text-red-600 border-red-200 hover:bg-red-50"
+                          className="bg-white text-blue-600 border border-blue-600 hover:shadow-md hover:bg-blue-50 transition-all"
                         >
-                          <XIcon className="w-4 h-4" />
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       )}
                     </div>
@@ -494,7 +491,7 @@ export function PurchaseModule() {
 
       {/* New Purchase Modal - Reorganized and Wider */}
       <Dialog open={isNewPurchaseDialogOpen} onOpenChange={setIsNewPurchaseDialogOpen}>
-        <DialogContent className="max-w-[95vw] w-full max-h-[95vh] overflow-hidden flex flex-col">
+        <DialogContent className="w-[95vw] max-w-7xl max-h-[90vh] overflow-hidden flex flex-col rounded-xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Nueva Compra de Insumos</DialogTitle>
             <DialogDescription>
@@ -504,7 +501,7 @@ export function PurchaseModule() {
           
           <form onSubmit={handleCreatePurchase} className="flex-1 flex flex-col overflow-hidden">
             <div className="flex-1 overflow-y-auto px-1">
-              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 pb-6">
+              <div className="grid grid-cols-1 lg:grid-cols-1 1xl:grid-cols-1 gap-8 pb-6">
                 {/* Columna 1: Datos del Proveedor */}
                 <div className="space-y-6">
                   <Card className="h-full">
@@ -622,8 +619,8 @@ export function PurchaseModule() {
                 {/* Columna 2: Selección de Insumos */}
                 <div className="space-y-6">
                   <Card className="h-full flex flex-col">
-                    <CardHeader className="bg-purple-50 border-b border-purple-100">
-                      <CardTitle className="text-lg text-purple-900">Seleccionar Insumos</CardTitle>
+                    <CardHeader className="bg-blue-50 border-b border-blue-200">
+                    <CardTitle className="text-lg text-blue-900">Seleccionar Insumos</CardTitle>
                     </CardHeader>
                     <CardContent className="flex-1 flex flex-col pt-6 space-y-4">
                       <div className="space-y-2">
@@ -661,7 +658,7 @@ export function PurchaseModule() {
                                       type="button"
                                       size="sm"
                                       onClick={() => addSupplyToPurchase(supply)}
-                                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                                      className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md transition-all"
                                     >
                                       <PlusIcon className="w-3 h-3 mr-1" />
                                       Agregar
@@ -680,9 +677,9 @@ export function PurchaseModule() {
                 {/* Columna 3: Carrito de Compra */}
                 <div className="space-y-6">
                   <Card className="h-full flex flex-col">
-                    <CardHeader className="bg-green-50 border-b border-green-100">
+                    <CardHeader className="bg-blue-50 border-b border-blue-200">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg text-green-900 flex items-center">
+                        <CardTitle className="text-lg text-blue-900 flex items-center">
                           <ShoppingCartIcon className="w-5 h-5 mr-2" />
                           Carrito de Compra
                         </CardTitle>
@@ -748,14 +745,18 @@ export function PurchaseModule() {
                             ))}
                           </div>
 
-                          <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 border-t space-y-3">
+                          <div className="p-4 bg-blue-50 border-t border-blue-200 space-y-3">
                             <div className="flex justify-between items-center text-sm">
                               <span className="text-gray-600">Insumos:</span>
                               <span className="text-gray-900">{purchaseForm.items.length}</span>
                             </div>
-                            <div className="flex justify-between items-center text-sm">
-                              <span className="text-gray-600">Cantidad total:</span>
-                              <span className="text-gray-900">{purchaseForm.items.reduce((sum, item) => sum + item.quantity, 0)}</span>
+                            <div className="flex justify-between items-center text-base">
+                              <span className="text-blue-600 font-medium">
+                                Cantidad total:
+                              </span>
+                              <span className="text-blue-900 font-semibold text-lg">
+                                {purchaseForm.items.reduce((sum, item) => sum + item.quantity, 0)}
+                              </span>
                             </div>
                             <div className="flex justify-between items-center text-sm">
                               <span className="text-gray-600">Subtotal:</span>
@@ -789,7 +790,7 @@ export function PurchaseModule() {
                   resetPurchaseForm();
                   setIsNewPurchaseDialogOpen(false);
                 }}
-                className="flex-1 h-12 border-gray-300 hover:bg-gray-100"
+                className="flex-1 h-12 bg-white text-blue-600 border border-blue-600 hover:shadow-md hover:bg-blue-50 transition-all"
               >
                 Cancelar Compra
               </Button>
@@ -887,7 +888,7 @@ export function PurchaseModule() {
                 </Button>
                 <Button 
                   onClick={() => alert('Generando PDF...')}
-                  className="flex-1 bg-green-600 hover:bg-green-700"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md transition-all"
                 >
                   <FileDown className="w-4 h-4 mr-2" />
                   Descargar PDF
