@@ -383,7 +383,6 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
     clientId: '',
     clientName: '',
     clientDocument: '',
-    type: 'Directa',
     paymentMethod: 'Efectivo',
     items: [] as SaleItem[]
   });
@@ -521,7 +520,7 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
       total: calculateTotal(),
       paymentMethod: saleForm.paymentMethod,
       status: 'Completada',
-      type: saleForm.type,
+      type: 'Directa',
       items: saleForm.items
     };
 
@@ -541,7 +540,6 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
       clientId: '',
       clientName: '',
       clientDocument: '',
-      type: 'Directa',
       paymentMethod: 'Efectivo',
       items: []
     });
@@ -702,40 +700,22 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>Tipo de Venta *</Label>
-                        <Select
-                          value={saleForm.type}
-                          onValueChange={(value) => setSaleForm({ ...saleForm, type: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Directa">Venta Directa</SelectItem>
-                            <SelectItem value="Pedido">Pedido</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>Método de Pago *</Label>
-                        <Select
-                          value={saleForm.paymentMethod}
-                          onValueChange={(value) => setSaleForm({ ...saleForm, paymentMethod: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Efectivo">Efectivo</SelectItem>
-                            <SelectItem value="Tarjeta">Tarjeta</SelectItem>
-                            <SelectItem value="Transferencia">Transferencia</SelectItem>
-                            <SelectItem value="Crédito">Crédito</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                    <div className="space-y-2">
+                      <Label>Método de Pago *</Label>
+                      <Select
+                        value={saleForm.paymentMethod}
+                        onValueChange={(value) => setSaleForm({ ...saleForm, paymentMethod: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Efectivo">Efectivo</SelectItem>
+                          <SelectItem value="Tarjeta">Tarjeta</SelectItem>
+                          <SelectItem value="Transferencia">Transferencia</SelectItem>
+                          <SelectItem value="Crédito">Crédito</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </CardContent>
                 </Card>
@@ -912,20 +892,17 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
             <table className="w-full">
               <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs text-gray-600 uppercase tracking-wider">Venta #</th>
                   <th className="px-6 py-4 text-left text-xs text-gray-600 uppercase tracking-wider">Cliente</th>
                   <th className="px-6 py-4 text-center text-xs text-gray-600 uppercase tracking-wider">Fecha</th>
-                  <th className="px-6 py-4 text-center text-xs text-gray-600 uppercase tracking-wider">Tipo</th>
                   <th className="px-6 py-4 text-right text-xs text-gray-600 uppercase tracking-wider">Total</th>
                   <th className="px-6 py-4 text-center text-xs text-gray-600 uppercase tracking-wider">Pago</th>
-                  <th className="px-6 py-4 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th>
                   <th className="px-6 py-4 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {currentSales.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="px-6 py-12 text-center text-gray-500">
+                    <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
                       <ShoppingCartIcon className="w-12 h-12 mx-auto mb-2 text-gray-300" />
                       <p>No se encontraron ventas</p>
                     </td>
@@ -933,12 +910,6 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
                 ) : (
                   currentSales.map((sale) => (
                     <tr key={sale.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center space-x-2">
-                          <ShoppingCartIcon className="w-5 h-5 text-blue-600" />
-                          <span className="text-sm text-gray-900">#{sale.id}</span>
-                        </div>
-                      </td>
                       <td className="px-6 py-4">
                         <div>
                           <p className="text-sm text-gray-900">{sale.clientName}</p>
@@ -948,17 +919,14 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
                         </div>
                       </td>
                       <td className="px-6 py-4 text-center text-sm text-gray-600">{sale.date}</td>
-                      <td className="px-6 py-4 text-center">
-                        {getTypeBadge(sale.type)}
-                      </td>
-                      <td className="px-6 py-4 text-right text-sm text-gray-900">
-                        ${sale.total.toLocaleString()}
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex flex-col items-end">
+                          <span className="text-sm text-gray-900">${sale.total.toLocaleString()}</span>
+                          <Badge variant="secondary" className="text-xs mt-1">{sale.paymentMethod}</Badge>
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-center">
                         <Badge variant="secondary">{sale.paymentMethod}</Badge>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        {getStatusBadge(sale.status)}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center space-x-2">
@@ -1091,18 +1059,10 @@ export function SalesModule({ clientFilter, onClearClientFilter }: SalesModulePr
                     <p className="text-gray-900 mt-1">{viewingSale.date}</p>
                   </div>
                   <div>
-                    <Label className="text-gray-600">Tipo de venta</Label>
-                    <p className="mt-1">{getTypeBadge(viewingSale.type)}</p>
-                  </div>
-                  <div>
                     <Label className="text-gray-600">Método de pago</Label>
                     <p className="mt-1">
                       <Badge variant="secondary">{viewingSale.paymentMethod}</Badge>
                     </p>
-                  </div>
-                  <div>
-                    <Label className="text-gray-600">Estado</Label>
-                    <p className="mt-1">{getStatusBadge(viewingSale.status)}</p>
                   </div>
                   <div>
                     <Label className="text-gray-600">Total</Label>

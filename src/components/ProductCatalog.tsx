@@ -448,7 +448,7 @@ export function ProductCatalog() {
                             <span className="font-semibold text-gray-900">
                               {product.name}
                             </span>
-                            <span className="text-sm text-gray-500">
+                             <span className="text-sm text-blue-900">
                               Ref: {product.reference}
                             </span>
                           </div>
@@ -456,10 +456,10 @@ export function ProductCatalog() {
                       </td>
                         <td className="py-4 px-6">
                         <div className="flex flex-col">
-                          <span className="text-blue-600 font-semibold">
+                          <span className="text-blue-900 font-semibold">
                             ${product.price.toLocaleString()}
                           </span>
-                          <span className="text-sm text-gray-500">
+                           <span className="text-sm text-blue-900">
                             Stock: {product.stock} und
                           </span>
                         </div>
@@ -470,7 +470,7 @@ export function ProductCatalog() {
                       <Button
                       size="sm"
                       onClick={() => viewDetails(product)}
-                      className="bg-white text-blue-600 border border-black hover:shadow-md hover:bg-blue-50 transition-all"
+                      className="bg-white text-blue-900 border border-black hover:shadow-md hover:bg-blue-50 transition-all"
                     >
                       <Eye className="w-4 h-4" />
                     </Button>
@@ -478,7 +478,7 @@ export function ProductCatalog() {
                     <Button
                       size="sm"
                       onClick={() => handleEdit(product)}
-                      className="bg-white text-blue-600 border border-black hover:shadow-md hover:bg-blue-50 transition-all"
+                      className="bg-white text-blue-900 border border-black hover:shadow-md hover:bg-blue-50 transition-all"
                     >
                       <Edit className="w-4 h-4" />
                     </Button>
@@ -486,7 +486,7 @@ export function ProductCatalog() {
                     <Button
                       size="sm"
                       onClick={() => handleDelete(product.id)}
-                      className="bg-white text-blue-600 border border-black hover:shadow-md hover:bg-blue-50 transition-all"
+                      className="bg-white text-blue-900 border border-black hover:shadow-md hover:bg-blue-50 transition-all"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>

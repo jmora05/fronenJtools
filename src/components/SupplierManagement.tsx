@@ -479,15 +479,17 @@ export function SupplierManagement() {
                 </div>
 
                 {/* Estado */}
-                <div className="border-t border-gray-200 pt-4">
-                  <div className="flex items-center space-x-3">
-                    <Switch
-                      checked={formData.isActive}
-                      onCheckedChange={(checked) => setFormData({...formData, isActive: checked})}
-                    />
-                    <Label>Proveedor activo</Label>
-                  </div>
-                </div>
+                  {editingSupplier && (
+                    <div className="border-t border-gray-200 pt-4">
+                      <div className="flex items-center space-x-3">
+                        <Switch
+                          checked={formData.isActive}
+                          onCheckedChange={(checked) => setFormData({...formData, isActive: checked})}
+                        />
+                        <Label>Proveedor activo</Label>
+                      </div>
+                    </div>
+                  )}
 
                 <div className="flex justify-end space-x-2 pt-4 border-t">
                   <Button type="button" variant="outline" onClick={resetForm}>
@@ -526,14 +528,9 @@ export function SupplierManagement() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">ID</th>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Empresa</th>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Documento</th>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Contacto</th>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Email</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Ciudad</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
+                    <th className="px-6 py-3 text-left text-xs text-blue-900 uppercase tracking-wider">Empresa</th>
+                    <th className="px-6 py-3 text-left text-xs text-blue-900 uppercase tracking-wider">Contacto</th>
+                    <th className="px-6 py-3 text-center text-xs text-blue-900 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -546,32 +543,19 @@ export function SupplierManagement() {
                 ) : (
                   currentSuppliers.map((supplier) => (
                     <tr key={supplier.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 text-sm text-gray-900">{supplier.id}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-2">
                           <BuildingIcon className="w-5 h-5 text-blue-600" />
                           <span className="text-sm text-gray-900">{supplier.name}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
-                        {supplier.documentType} {supplier.documentNumber}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-900">{supplier.contact}</td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{supplier.email}</td>
-                      <td className="px-6 py-4 text-center">
-                        <Badge variant="secondary">{supplier.city}</Badge>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <div className="flex items-center justify-center space-x-2">
-                          <Switch
-                            checked={supplier.isActive}
-                            onCheckedChange={() => toggleStatus(supplier.id)}
-                          />
-                          <span className="text-sm text-gray-600">
-                            {supplier.isActive ? 'Activo' : 'Inactivo'}
-                          </span>
-                        </div>
-                      </td>
+                      <td className="px-6 py-4">
+                          <div className="text-sm text-gray-900">{supplier.contact}</div>
+                          <div className="text-xs text-gray-500">
+                            {supplier.documentType} {supplier.documentNumber}
+                          </div>
+                        </td>
+                      
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center space-x-2">
                           <Tooltip>
@@ -594,7 +578,7 @@ export function SupplierManagement() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleEdit(supplier)}
-                                className="text-orange-600 hover:text-orange-700 border-orange-200 hover:border-orange-300 hover:bg-orange-50"
+                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
                               >
                                 <EditIcon className="w-4 h-4" />
                               </Button>
@@ -608,7 +592,7 @@ export function SupplierManagement() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleDelete(supplier)}
-                                className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
+                                className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
                               >
                                 <TrashIcon className="w-4 h-4" />
                               </Button>

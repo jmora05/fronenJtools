@@ -123,16 +123,14 @@ export function SupplyManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    stockCurrent: '',
-    stockMin: '',
-    stockMax: '',
-    unit: 'Unidades',
-    status: true
-  });
+const [formData, setFormData] = useState({
+  name: '',
+  description: '',
+  price: '',
+  stockCurrent: '',
+  unit: 'Unidades',
+  status: true
+});
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -145,8 +143,6 @@ export function SupplyManagement() {
               id: editingSupply.id,
               price: parseFloat(formData.price),
               stockCurrent: parseInt(formData.stockCurrent),
-              stockMin: parseInt(formData.stockMin),
-              stockMax: parseInt(formData.stockMax),
               status: formData.status
             }
           : sup
@@ -343,17 +339,6 @@ export function SupplyManagement() {
                 {/* Stock */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="stockMin">Stock mínimo *</Label>
-                    <Input
-                      id="stockMin"
-                      type="number"
-                      value={formData.stockMin}
-                      onChange={(e) => setFormData({...formData, stockMin: e.target.value})}
-                      placeholder="10"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
                     <Label htmlFor="stockCurrent">Stock actual *</Label>
                     <Input
                       id="stockCurrent"
@@ -364,35 +349,21 @@ export function SupplyManagement() {
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="stockMax">Stock máximo *</Label>
-                    <Input
-                      id="stockMax"
-                      type="number"
-                      value={formData.stockMax}
-                      onChange={(e) => setFormData({...formData, stockMax: e.target.value})}
-                      placeholder="100"
-                      required
-                    />
-                  </div>
                 </div>
 
                 {/* Estado */}
-                <div className="space-y-2">
+                {editingSupply !== null && (
                   <div className="flex items-center justify-between p-4 border rounded-lg bg-gray-50">
-                    <div className="space-y-1">
-                      <Label htmlFor="status" className="text-base">Estado del Insumo</Label>
-                      <p className="text-sm text-gray-500">
-                        {formData.status ? 'El insumo está activo y disponible' : 'El insumo está inactivo'}
-                      </p>
-                    </div>
+                    <Label>Estado del Insumo</Label>
+
                     <Switch
-                      id="status"
                       checked={formData.status}
-                      onCheckedChange={(checked) => setFormData({...formData, status: checked})}
+                      onCheckedChange={(checked) =>
+                        setFormData({ ...formData, status: checked })
+                      }
                     />
                   </div>
-                </div>
+                )}
 
                 <div className="flex justify-end space-x-2 pt-4 border-t">
                   <Button type="button" variant="outline" onClick={resetForm}>
@@ -431,13 +402,10 @@ export function SupplyManagement() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">ID</th>
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Nombre</th>
                   <th className="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Descripción</th>
                   <th className="px-6 py-3 text-right text-xs text-gray-600 uppercase tracking-wider">Precio</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Stock</th>
                   <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Unidad</th>
-                  <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Estado</th>
                   <th className="px-6 py-3 text-center text-xs text-gray-600 uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
@@ -452,7 +420,6 @@ export function SupplyManagement() {
                   currentSupplies.map((supply) => {
                     return (
                       <tr key={supply.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 text-sm text-gray-900">{supply.id}</td>
                         <td className="px-6 py-4">
                           <div className="flex items-center space-x-2">
                             <PackageIcon className="w-5 h-5 text-blue-600" />
@@ -466,30 +433,15 @@ export function SupplyManagement() {
                           ${supply.price.toLocaleString()}
                         </td>
                         <td className="px-6 py-4 text-center text-sm text-gray-900">
-                          {supply.stockCurrent}
-                        </td>
-                        <td className="px-6 py-4 text-center">
-                          <Badge variant="secondary">{supply.unit}</Badge>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center justify-center">
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <div className="flex items-center space-x-2">
-                                  <Switch
-                                    checked={supply.status}
-                                    onCheckedChange={() => handleToggleStatus(supply)}
-                                  />
-                                  <span className={`text-xs ${supply.status ? 'text-green-600' : 'text-gray-400'}`}>
-                                    {supply.status ? 'Activo' : 'Inactivo'}
-                                  </span>
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>{supply.status ? 'Desactivar insumo' : 'Activar insumo'}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </div>
+
+                          {supply.stockCurrent} {supply.unit}
+
+                          {supply.stockCurrent <= 10 && (
+                            <Badge className="bg-red-100 text-red-700 border-red-200 ml-2">
+                              Bajo stock
+                            </Badge>
+                          )}
+
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center justify-center space-x-2">
@@ -513,7 +465,7 @@ export function SupplyManagement() {
                                   variant="outline"
                                   size="sm"
                                   onClick={() => handleEdit(supply)}
-                                  className="text-orange-600 hover:text-orange-700 border-orange-200 hover:border-orange-300 hover:bg-orange-50"
+                                  className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
                                 >
                                   <EditIcon className="w-4 h-4" />
                                 </Button>
@@ -527,7 +479,7 @@ export function SupplyManagement() {
                                   variant="outline"
                                   size="sm"
                                   onClick={() => handleDelete(supply)}
-                                  className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300 hover:bg-red-50"
+                                  className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300 hover:bg-blue-50"
                                 >
                                   <TrashIcon className="w-4 h-4" />
                                 </Button>
@@ -621,14 +573,6 @@ export function SupplyManagement() {
                   <div>
                     <Label className="text-gray-600">Stock actual</Label>
                     <p className="text-gray-900 mt-1">{viewingSupply.stockCurrent}</p>
-                  </div>
-                  <div>
-                    <Label className="text-gray-600">Stock mínimo</Label>
-                    <p className="text-gray-900 mt-1">{viewingSupply.stockMin}</p>
-                  </div>
-                  <div>
-                    <Label className="text-gray-600">Stock máximo</Label>
-                    <p className="text-gray-900 mt-1">{viewingSupply.stockMax}</p>
                   </div>
                   <div>
                     <Label className="text-gray-600">Estado</Label>
